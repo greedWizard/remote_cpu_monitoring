@@ -1,0 +1,1 @@
+Django Client-Server data sending/receiving
