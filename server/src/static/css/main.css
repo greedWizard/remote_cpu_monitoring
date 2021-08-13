@@ -1,17 +1,29 @@
 body {
-    background-color: azure;
+    background-color: white;
+    margin: 0;
+    padding: 0;
 }
 
 .content {
     margin-left: 15%;
+    width: 65%;
 }
 
 .header {
+    background-color: gainsboro;
+    height: 3rem;
+}
+.header .header-list {
     margin-left: 15%;
+    width: 65%;
+}
+
+th {
+    cursor: pointer;
 }
 
 th, td {
     padding: 15px;
     text-align: left;
-    background-color: beige;
+    background-color: whitesmoke;
 }

@@ -2,4 +2,130 @@
 
 {% block content %}
 <h2>Data Recieved:</h2>
+
+<div class="info">
+    <h3>Info:</h3> 
+    <div class="item">
+        <b>Last 100: </b>
+        <span> min: <b>{{ min_last }}</b></span>
+        <span> max: <b>{{ max_last }}</b></span>
+        <span> avg: <b>{{ avg_last }}</b></span>
+    </div>
+    <div class="item">
+        <b>All:</b>
+        <span> min: <b>{{ min_all }}</b></span>
+        <span> max: <b>{{ min_all }}</b></span>
+        <span> avg: <b>{{ min_all }}</b></span>
+    </div>
+</div>
+
+{{ objects }}
+
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th onclick="sortByCpu()" class="clickable">
+                CPU Load
+            </th>
+            <th onclick="sortByTimestamp()">
+                Timestamp
+            </th>
+            <th onclick="sortByIp()">
+                IP Address
+            </th>
+        </tr>
+    </thead>
+    <tbody id="dataTableBody">
+
+    </tbody>
+</table>
+
+
+<script>
+    var cpuDesc = true;
+    var tsDesc = true;
+    var ipDesc = true;
+
+    function getData() {
+        var data = [];
+
+        {% for datum in data %}
+            data.push({
+                cpu_load: {{ datum.cpu_load }},
+                timestamp: new Date("{{ datum.timestamp|date:'c' }}"),
+                ip_address: "{{ datum.ip_address }}"
+            })
+        {% endfor %}
+
+        return data
+    }
+
+    function loadTable(items) {
+        const table = document.getElementById('dataTableBody')
+
+        items.forEach(element => {
+            let row = table.insertRow()
+            let cpuLoad = row.insertCell(0)
+            cpuLoad.innerHTML = element.cpu_load + "%"
+            
+            let timestamp = row.insertCell(1)
+            timestamp.innerHTML = element.timestamp
+
+            let ipAddress = row.insertCell(2)
+            ipAddress.innerHTML = element.ip_address
+        });
+    }
+
+    function refreshTable(items) {
+        let old_tbody = document.getElementById('dataTableBody')
+
+        let new_tbody = document.createElement('tbody');
+        new_tbody.setAttribute('id', 'dataTableBody')
+
+        old_tbody.parentNode.replaceChild(new_tbody, old_tbody)
+
+        loadTable(items)
+    }
+
+    function sortByCpu() {
+        let data = getData()
+
+        if(cpuDesc)
+            data.sort((a,b) => (a.cpu_load > b.cpu_load) ? 1 : ((b.cpu_load > a.cpu_load) ? -1 : 0))
+        else {
+            data.sort((a,b) => (a.cpu_load <= b.cpu_load) ? 1 : ((b.cpu_load < a.cpu_load) ? -1 : 0))
+        }
+        
+        cpuDesc = !cpuDesc
+        refreshTable(data)
+    }
+
+    function sortByIp() {
+        let data = getData()
+
+        if(ipDesc) {
+            data.sort((a,b) => (a.ip_address > b.ip_address) ? 1 : ((b.ip_address > a.ip_address) ? -1 : 0))
+        } else data.sort((a,b) => (a.ip_address <= b.ip_address) ? 1 : ((b.ip_address < a.ip_address) ? -1 : 0))
+        
+        ipDesc = !ipDesc
+        refreshTable(data)
+    }
+
+    function sortByTimestamp() {
+        let data = getData()
+
+        if(tsDesc) {
+            data.sort((a,b) => (a.timestamp > b.timestamp) ? 1 : ((b.timestamp > a.timestamp) ? -1 : 0))
+        } else data.sort((a,b) => (a.timestamp <= b.timestamp) ? 1 : ((b.timestamp < a.timestamp) ? -1 : 0))
+
+        tsDesc = !tsDesc
+        refreshTable(data)
+    }
+
+    var data = getData()
+
+    loadTable(data)
+</script>
+
 {% endblock content %}
+

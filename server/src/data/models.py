@@ -13,3 +13,6 @@ class Data(models.Model):
         auto_now=True,
     )
     ip_address = models.CharField(max_length=15)
+
+    def __repr__(self) -> str:
+        return f'<Data {self.cpu_load} from {self.ip_address} at {self.timestamp.strftime("%d-%m-%d")}>'
