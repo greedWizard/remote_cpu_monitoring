@@ -1,1 +1,5 @@
-Django Client-Server data sending/receiving
+Инструкции по запуску в файлах Readme.md в соответствующих папках.
+
+Связаться со мной:
+
+Telegram: @gtrnhlbnk1

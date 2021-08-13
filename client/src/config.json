@@ -1,0 +1,5 @@
+{
+    "timeout": 5,
+    "url": "http://host.docker.internal:8000",
+    "connection_tries": 5
+}

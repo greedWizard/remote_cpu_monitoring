@@ -1,0 +1,20 @@
+FROM python:3.9.6-alpine3.13
+
+ENV DJANGO_SETTINGS_MODULE project.settings.dev
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+ENV req requirements.txt
+
+WORKDIR /app
+
+ADD ${req} .
+
+RUN pip install --upgrade pip
+
+RUN pip install -r ${req}
+
+ADD ./src .
+
+CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
